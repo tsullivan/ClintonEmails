@@ -65,7 +65,7 @@ with open(incidentsFileName, 'rb') as scsvfile:
         mdSubject= row[2]
         mdTo= row[3]
         mdFrom= row[4]
-        mdDate= row[6]
+        mdDate= row[6] if row[6] else "2008-01-01"
         extractedBody= row[20]
         rawText= row[21]
         print mdSubject
@@ -182,6 +182,6 @@ with open(incidentsFileName, 'rb') as scsvfile:
         })
 
 
-if len(actions) >= 0:
-    helpers.bulk(es, actions)
-    del actions[0:len(actions)]
+while len(actions) > 0:
+    helpers.bulk(es, actions[:499])
+    actions = actions[500:]
