@@ -4,10 +4,10 @@ from elasticsearch import helpers
 from elasticsearch.client import Elasticsearch
 import time
 
-incidentsFileName = "/Users/tsullivan/Downloads/Emails-refined.csv"
+incidentsFileName = "/Users/tsullivan/Downloads/ClintonEmails/Emails-ascii.csv"
 
 start = time.time()
-es = Elasticsearch()
+es = Elasticsearch("http://elastic:changeme@localhost:9200")
 actions = []
 entityNum=0
 indexSettings={
