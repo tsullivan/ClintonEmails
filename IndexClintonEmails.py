@@ -1,13 +1,16 @@
 __author__ = 'Mark'
+import sys
+import os
 import csv
 from elasticsearch import helpers
 from elasticsearch.client import Elasticsearch
-import time
 
-incidentsFileName = "/Users/tsullivan/Downloads/ClintonEmails/Emails-ascii.csv"
+script_dir = os.path.dirname(__file__)
+incidentsFileName = os.path.join(script_dir, "Emails-ascii.csv")
 
-start = time.time()
-es = Elasticsearch("http://elastic:changeme@localhost:9200")
+uri = sys.argv[1] if sys.argv[1] else "http://localhost:9200"
+es = Elasticsearch(uri)
+
 actions = []
 entityNum=0
 indexSettings={
@@ -181,7 +184,9 @@ with open(incidentsFileName, 'rb') as scsvfile:
                 "_source": doc
         })
 
+print "---------------------------------------------"
 
 while len(actions) > 0:
+    print len(actions)
     helpers.bulk(es, actions[:499])
     actions = actions[500:]
